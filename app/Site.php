@@ -70,4 +70,27 @@ class Site extends Model
         return $this->belongsToMany('App\PaymentMethod', 'pc_sites_payment_methods', 'pc_sites_id', 'pc_payment_methods_id');
     }
 
+
+    /* ************************************************************************************************************************************/
+    /* *********************************************************** SCOPE ******************************************************************/
+    /* ************************************************************************************************************************************/
+
+    public function scopeGetGalerySite($query, $site_id, $skip_image, $take_image) {
+        return $query->findOrFail($site_id)->galery()->orderBy('id', 'desc')->skip($skip_image)->take($take_image)->get()->map(function ($ga) {
+            // $arr = preg_match_all ('/\S+\.(?:jpg|jpeg|gif|png)/', $ga->name, NULL);
+            $ext = explode('.', $ga->name);
+            if(@end($ext) !== "gif") {
+                $ga->dataURL = config('services.image.image_url').'images/450/'.$ga->name;
+                $ga->dataURLx700 = config('services.image.image_url').'images/700/'.$ga->name;
+                $ga->dataURLx300 = config('services.image.image_url').'images/300/'.$ga->name;
+                $ga->thumbnailUrl = config('services.image.image_url').'images/160/'.$ga->name;
+            } else {
+                $ga->dataURL = config('services.image.image_url').'images/'.$ga->name;
+                $ga->thumbnailUrl = config('services.image.image_url').'images/'.$ga->name;
+            }
+            $ga->typeimage = strtoupper(end($ext));
+            return $ga;
+        })/*->sortBy('id')*/;
+    }
+
 }

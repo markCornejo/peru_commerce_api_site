@@ -36,6 +36,8 @@ Route::group(['prefix' => 'v1/{lang}', 'middleware' => 'lang'], function () {
 
         Route::group(['prefix' => 'sites/{site}'], function () {
             Route::apiResource('images', 'Admin\ImageController');
+            Route::put('images/{image}/cropper', 'Admin\ImageCropperController@cut'); // cortar imagen
+            Route::apiResource('ubigeo', 'Admin\UbigeoController')->only(['index']);
         });
 
     });

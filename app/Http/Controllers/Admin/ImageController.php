@@ -39,20 +39,9 @@ class ImageController extends Controller
     {
         //
         $site = $request->route('site');
-        // $query = DB::raw("(CASE WHEN user_group='1' THEN 'Admin' WHEN user_group='2' THEN 'User' ELSE 'Superadmin' END) as name");
-        $galery = Site::findOrFail($site)->galery->map(function ($ga) {
-            $gif = substr($ga->name, -4);
-            // var_dump($gif);
-            if(@$gif !== ".gif") {
-                $ga->dataURL = config('services.image.image_url').'images/450/'.$ga->name;
-                $ga->thumbnailUrl = config('services.image.image_url').'images/160/'.$ga->name;
-            } else {
-                $ga->dataURL = config('services.image.image_url').'images/'.$ga->name;
-                $ga->thumbnailUrl = config('services.image.image_url').'images/'.$ga->name;
-            }
-            return $ga;
-        });
-
+        $take_image = ($request->take_image) ? $request->take_image : 15;
+        $skip_image = ($request->skip_image) ? $request->skip_image : 0;
+        $galery = Site::getGalerySite($site, $skip_image, $take_image);
         return $this->successResponse(true, new ImageAdminCollection($galery));
     }
 

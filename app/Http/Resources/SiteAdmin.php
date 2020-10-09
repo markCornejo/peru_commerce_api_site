@@ -42,6 +42,14 @@ class SiteAdmin extends JsonResource
         foreach($this->sites_locations as $key => $value) {
             $sites_locations = [
                 "id" => $value->id,
+                "pc_countries_id" => $value->pc_countries_id,
+                "ubicountry" => $value->ubicountry,
+                "pc_states_id" => $value->pc_states_id,
+                "ubistate" => $value->ubistate,
+                "pc_cities_id" => $value->pc_cities_id,
+                "ubicity" => $value->ubicity,
+                "pc_districs_id" => $value->pc_districs_id,
+                "ubidistrict" => $value->ubidistrict,
                 "main" => $value->main,
                 "lat" => $value->lat,
                 "lng" => $value->lng,

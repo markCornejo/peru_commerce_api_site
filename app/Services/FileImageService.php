@@ -39,7 +39,7 @@ class FileImageService
     /**
      * generar carpetas para la imagenes
      *
-     * @param  string $image64, imagen en codigo base64
+     * @param  string $image, url  o base64
      * @param  string $name, nombre de la imagen
      * @param  string $orientation, mantener una relación respecto al horizontal 'h', vertical 'v', ambos 'o'
      * @param  array $sizes, tamaños
@@ -77,6 +77,7 @@ class FileImageService
         return true;
 
     }
+
 
     /**
      * eliminar imagenes
@@ -124,5 +125,6 @@ class FileImageService
         Storage::makeDirectory($directory);
         Storage::put($directory.'/'.$name, /*(string) $image*/ file_get_contents($image));
     }
+
 
 }

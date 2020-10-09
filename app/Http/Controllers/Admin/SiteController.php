@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SiteAdminRequest;
 use App\Http\Resources\SiteAdmin as SiteAdminResources;
 use App\Location;
+use App\MgUbiGeo;
 use App\SiteLg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -64,7 +65,17 @@ class SiteController extends Controller
     {
         $site_id = (int) $request->route('site');
         $site = Site::with('sites_lg')
-                ->with('sites_locations')
+                ->with(['sites_locations' => function($query) {
+                    return $query->with(['ubicountry' => function($query) {
+                                $query->select('id', 'name');
+                            }])->with(['ubistate' => function($query) {
+                                $query->select('id', 'name');
+                            }])->with(['ubicity' => function($query) {
+                                $query->select('id', 'name');
+                            }])->with(['ubidistrict' => function($query) {
+                                $query->select('id', 'name');
+                            }]);
+                }])
                 ->with('sites_categories')
                 ->with('sites_subcategories')
                 ->findOrFail($site_id);

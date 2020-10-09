@@ -20,7 +20,10 @@ class ImageAdmin extends JsonResource
             "site_id" => $this->pc_sites_id,
             "name" => $this->name,
             "dataURL" => $this->dataURL,
+            "dataURLx700" => $this->dataURLx700,
+            "dataURLx300" => $this->dataURLx300,
             "thumbnailUrl" => $this->thumbnailUrl,
+            "typeimage" => $this->typeimage,
             "size" => 23124
         ];
     }
