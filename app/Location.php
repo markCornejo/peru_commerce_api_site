@@ -13,7 +13,7 @@ class Location extends Model
     const UPDATED_AT = 'date_upd';
 
     protected $fillable = [
-        'pc_countries_id', 'pc_states_id', 'pc_cities_id', 'pc_districs_id', 'main', 'lat', 'lng', 'address', 'status', 'phone'
+        'pc_sites_id', 'pc_countries_id', 'pc_states_id', 'pc_cities_id', 'pc_districs_id', 'main', 'lat', 'lng', 'address', 'status', 'phone'
     ];
 
     public function ubicountry() {
@@ -30,6 +30,36 @@ class Location extends Model
 
     public function ubidistrict() {
         return $this->belongsTo('App\UbiDistrict', 'pc_districs_id');
+    }
+
+
+    /* ************************************************************************************************************************************/
+    /* *********************************************************** SCOPE ******************************************************************/
+    /* ************************************************************************************************************************************/
+
+    /**
+     * Obtener el ultimo registro de locacion de un sitio
+     *
+     * @param  App/Location $query
+     * @param  int $site_id
+     * @return App/Location
+     */
+    public function scopeSiteLocations($query, $site_id) {
+
+        return $query->where('pc_sites_id', $site_id)
+                        ->with(['ubicountry' => function($query) {
+                            $query->select('id', 'name');
+                    }])->with(['ubistate' => function($query) {
+                            $query->select('id', 'name');
+                    }])->with(['ubicity' => function($query) {
+                            $query->select('id', 'name');
+                    }])->with(['ubidistrict' => function($query) {
+                            $query->select('id', 'name');
+                    }])
+                    ->latest()
+                    ->first();
+                    ;
+
     }
 
 }
